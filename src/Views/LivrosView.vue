@@ -8,11 +8,14 @@ import Swal from 'sweetalert2';
 
 
 import LivroModal from '../components/modal/LivroModal.vue';
+import dashBoard from '../components/dashBoard.vue';
+
 import { useLivroStore } from '../stores/livroStore';
 import { useAutorStore } from '../stores/autorStore';
 import { useCategoriaStore } from '../stores/categoriaStore';
 
 // Stores
+
 const livroStore = useLivroStore();
 const autorStore = useAutorStore();
 const categoriaStore = useCategoriaStore();
@@ -126,7 +129,8 @@ const reativar = async (id) => {
 
 <template>
   <div class="mx-auto animate-fade-in">
-    <header class="flex flex-col sm:flex-row sm:justify-between sm:items-end mb-10 gap-4 md:mt-20">
+
+    <header class="flex flex-col sm:flex-row sm:justify-between sm:items-end mb-10 gap-4 ">
       <div>
         <h1 class="text-3xl font-extrabold tracking-tight text-slate-900">Livros</h1>
         <p class="text-slate-500 text-sm mt-1 font-medium">Gerencie o acervo da livraria</p>

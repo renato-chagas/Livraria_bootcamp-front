@@ -11,10 +11,14 @@ import { toast } from 'vue-sonner'
 
 import AutorModal from '../components/modal/AutorModal.vue';
 
+// Stores
+
 const autorStore = useAutorStore();
 const { autores } = storeToRefs(autorStore);
 
 const mostrarModal = ref(false);
+
+// Função para Excluir Autor com confirmação
 
 const excluirAutorClick = async (autorId) => {
   const confirmacao = await Swal.fire({
