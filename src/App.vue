@@ -1,5 +1,6 @@
 <script setup>
 import { onMounted } from 'vue';
+import { Toaster } from 'vue-sonner'
 
 import { useLivroStore } from './stores/livroStore';
 import { useAutorStore } from './stores/autorStore';
@@ -19,14 +20,18 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="flex h-screen w-screen bg-slate-50 text-slate-900 font-sans overflow-hidden">
+  <div class="flex w-full h-screen bg-slate-50 text-slate-900 font-sans overflow-hidden">
     
     <Sidebar />
+    <Toaster
+    position="top-right"
+    rich-colors
+    closeButton
+    expand/>
 
     <main class="flex-1 overflow-y-auto p-8">
       <router-view />
     </main>
-    
   </div>
 </template>
 
