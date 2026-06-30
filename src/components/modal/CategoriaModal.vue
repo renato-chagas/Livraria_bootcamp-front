@@ -1,7 +1,9 @@
 <script setup>
 import { ref } from 'vue';
 import { useCategoriaStore } from '../../stores/categoriaStore';
+
 import { X } from '@lucide/vue'; 
+import { toast } from 'vue-sonner'
 
 const emit = defineEmits(['fechar']);
 const store = useCategoriaStore();
@@ -16,8 +18,13 @@ const submit = async () => {
 
   const res = await store.salvarCategoria(form.value);
   
-  if (res.sucesso) emit('fechar');
-  else erroMensagem.value = res.erro;
+  if (res.sucesso) {
+    emit('fechar');
+    toast.success('Categoria salva com sucesso!');
+  } else {
+    erroMensagem.value = res.erro;
+    toast.error('Erro ao salvar a categoria.');
+  }
   
   carregando.value = false;
 };

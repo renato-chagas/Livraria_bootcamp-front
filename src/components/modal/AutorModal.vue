@@ -1,7 +1,9 @@
 <script setup>
 import { ref } from 'vue';
 import { useAutorStore } from '../../stores/autorStore';
+
 import { X } from '@lucide/vue'; 
+import { toast } from 'vue-sonner'
 
 const emit = defineEmits(['fechar']);
 
@@ -17,8 +19,13 @@ const submit = async () => {
 
   const res = await store.salvarAutor(form.value);
   
-  if (res.sucesso) emit('fechar');
-  else erroMensagem.value = res.erro;
+  if (res.sucesso) {
+    emit('fechar');
+    toast.success('Autor salvo com sucesso!');
+  } else {
+    erroMensagem.value = res.erro;
+    toast.error('Erro ao salvar o autor.');
+  }
   
   carregando.value = false;
 };

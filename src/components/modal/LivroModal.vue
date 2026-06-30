@@ -4,7 +4,9 @@ import { storeToRefs } from 'pinia';
 import { useLivroStore } from '../../stores/livroStore';
 import { useAutorStore } from '../../stores/autorStore';
 import { useCategoriaStore } from '../../stores/categoriaStore';
+
 import { X } from '@lucide/vue';
+import { toast } from 'vue-sonner'
 
 const emit = defineEmits(['fechar']);
 
@@ -37,20 +39,6 @@ const carregando = ref(false);
 onMounted(() => {
   if (props.itemParaEditar) {
     form.value = { ...props.itemParaEditar };
-
-    if (!form.value.autor_id && props.itemParaEditar.autor) {
-      const nomeAutorLivro = props.itemParaEditar.autor.trim().toLowerCase();
-      const autorEncontrado = autores.value.find(a => a.nome.trim().toLowerCase() === nomeAutorLivro);
-
-      if (autorEncontrado) form.value.autor_id = autorEncontrado.id;
-    }
-
-    if (!form.value.categoria_id && props.itemParaEditar.categoria) {
-      const nomeCatLivro = props.itemParaEditar.categoria.trim().toLowerCase();
-      const catEncontrada = categorias.value.find(c => c.nome.trim().toLowerCase() === nomeCatLivro);
-      
-      if (catEncontrada) form.value.categoria_id = catEncontrada.id;
-    }
   }
 });
 
@@ -71,8 +59,13 @@ const submit = async () => {
     res = await store.salvarLivro(payload);
   }
   
-  if (res.sucesso) emit('fechar'); 
-  else erroMensagem.value = res.erro; 
+  if (res.sucesso) {
+    emit('fechar');
+    toast.success('Livro salvo com sucesso!');
+  } else {
+    erroMensagem.value = res.erro;
+    toast.error(res.erro || 'Ocorreu um erro ao salvar o livro.');
+  }
   
   carregando.value = false;
 };
