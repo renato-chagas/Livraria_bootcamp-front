@@ -8,28 +8,33 @@ const props = defineProps({
     valorEmEstoque: { type: String, required: true }
 });
 
-// Criamos um array dinâmico com a configuração de cada card
+// array dinâmico 
+
 const cards = computed(() => [
     {
         titulo: 'Total no Acervo',
         valor: props.totalLivros,
         icone: Book,
         corFundo: 'bg-indigo-50',
-        corIcone: 'text-indigo-600'
+        corIcone: 'text-indigo-600',
+        textColor: 'text-indigo-600'
     },
     {
         titulo: 'Livros Ativos',
         valor: props.livrosAtivos,
         icone: CheckCircle,
         corFundo: 'bg-emerald-50',
-        corIcone: 'text-emerald-600'
+        corIcone: 'text-emerald-600',
+        textColor: 'text-amber-600'
     },
     {
         titulo: 'Valor em Estoque',
         valor: props.valorEmEstoque,
         icone: CircleDollarSign,
         corFundo: 'bg-amber-50',
-        corIcone: 'text-amber-600'
+        corIcone: 'text-amber-600',
+        textColor: 'text-emerald-600'
+
     }
 ]);
 </script>
@@ -37,10 +42,13 @@ const cards = computed(() => [
 <template>
     <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
         <div v-for="(card, index) in cards" :key="index"
-            class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm flex items-center justify-between transition-all hover:shadow-md gap-4">
+            class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-5 shadow-sm flex items-center justify-between transition-all hover:shadow-md gap-4">
             <div class="min-w-0 flex-1">
                 <p class="text-sm font-medium text-slate-500 mb-1 truncate">{{ card.titulo }}</p>
-                <h3 class="text-xl sm:text-2xl font-bold text-slate-900 truncate" :title="card.valor">
+                <h3 :class="[
+                    'text-xl sm:text-2xl font-bold truncate',
+                    card.textColor
+                ]" :title="card.valor">
                     {{ card.valor }}
                 </h3>
             </div>

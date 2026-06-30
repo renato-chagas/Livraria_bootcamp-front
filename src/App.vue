@@ -20,7 +20,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="flex w-full h-screen bg-slate-50 text-slate-900 font-sans overflow-hidden">
+  <div class="flex w-full h-screen bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100 ">
     
     <Sidebar />
     <Toaster
