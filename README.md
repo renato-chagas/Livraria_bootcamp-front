@@ -1,91 +1,95 @@
 # 📚 Livraria Sabitiruc's - Frontend
 
-Frontend da aplicação de gerenciamento de livros desenvolvido em **Vue 3**, responsável pela interface de cadastro, consulta, edição e remoção de livros.
+Aplicação web desenvolvida em Vue 3 para gerenciamento do catálogo da Livraria Sabitiruc's, consumindo a API REST do projeto.
 
-## 🚀 Tecnologias
+## Tecnologias
 
-* Vue 3
-* JavaScript
-* Vite
-* Vue Router
-* Axios
+- Vue 3
+- Pinia
+- Vue Router
+- Axios
+- Tailwind CSS v4
+- Lucide
+- SweetAlert2
+- Vue Sonner
 
-## ✨ Funcionalidades
+---
 
-* Listagem de livros
-* Cadastro de livros
-* Edição de livros
-* Remoção de livros
-* Pesquisa por título e ISBN
-* Filtro por autor
-* Filtro por categoria
-* Validação dos campos
-* Interface responsiva
+## Instalação
 
-## 📋 Requisitos
-
-* Node.js 20+
-* npm
-
-## ⚙️ Configuração
-
-Crie um arquivo `.env` na raiz do projeto:
-
-```env
-VITE_API_URL=http://localhost:3000
-```
-
-## ▶️ Instalação
-
-Clone o repositório:
+### 1. Clone o repositório
 
 ```bash
-git clone <url-do-repositorio>
+git clone <url-do-frontend>
 cd frontend
 ```
 
-Instale as dependências:
+### 2. Instale as dependências
 
 ```bash
 npm install
 ```
 
-## 💻 Executando
+### 3. Configure as variáveis de ambiente
 
-Inicie o servidor de desenvolvimento:
+Crie um arquivo `.env` copiando o `.env.example`.
+
+Exemplo:
+
+```env
+VITE_API_URL=http://localhost:3000/api
+```
+
+### 4. Execute
 
 ```bash
 npm run dev
 ```
 
-A aplicação estará disponível em:
+Aplicação disponível em
 
 ```
 http://localhost:5173
 ```
 
-## 📦 Build para produção
+---
 
-```bash
-npm run build
+# ✨ Funcionalidades
+
+## Obrigatórias
+
+- ✅ Cadastro de livros
+- ✅ Edição de livros
+- ✅ Inativação de livros
+- ✅ Exclusão de livros
+- ✅ Cadastro de autores
+- ✅ Cadastro de categorias
+- ✅ Pesquisa por título e ISBN
+- ✅ Filtro por autor
+- ✅ Filtro por categoria
+- ✅ Persistência dos dados em PostgreSQL
+- ✅ Validações de negócio
+
+## Funcionalidades Extras
+
+- 🌙 Dark Mode
+- 📊 Dashboard com métricas
+- 🔍 Filtro por status (Ativos/Inativos/Todos)
+- ♻️ Reativação de livros
+- 🎨 Interface responsiva
+- 🔔 Toasts e confirmações com SweetAlert
+
+---
+
+## Estrutura
+
 ```
-
-## 📁 Estrutura
-
-```text
-src/
-├── assets/
-├── components/
-├── router/
-├── views/
-├── App.vue
-└── main.js
+src
+├── api
+├── components
+├── router
+├── services
+├── stores
+├── views
+└── App.vue
 ```
-
-## 🔗 Comunicação com a API
-
-O frontend consome a API REST desenvolvida no projeto backend por meio do Axios. A URL da API pode ser configurada através da variável `VITE_API_URL`.
-
-## 👨‍💻 Autor
-
-**Renato Chagas de Moraes**
