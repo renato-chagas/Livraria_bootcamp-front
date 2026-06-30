@@ -8,7 +8,7 @@ import Swal from 'sweetalert2';
 
 
 import LivroModal from '../components/modal/LivroModal.vue';
-import dashBoard from '../components/dashBoard.vue';
+import DashBoard from '../components/dashBoard.vue';
 
 import { useLivroStore } from '../stores/livroStore';
 import { useAutorStore } from '../stores/autorStore';
@@ -124,11 +124,30 @@ const reativar = async (id) => {
   }
 };
 
+// Dasboard
+
+const totalLivros = computed(() => livros.value.length);
+
+const livrosAtivos = computed(() => livros.value.filter(livro => livro.ativo).length);
+
+const valorEmEstoque = computed(() => {
+  const total = livros.value.reduce((acc, livro) => {
+    if (livro.ativo) {
+      return acc + (Number(livro.preco) * Number(livro.quantidade_estoque));
+    }
+    return acc;
+  }, 0);
+  
+  return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(total);
+});
+
 
 </script>
 
 <template>
   <div class="mx-auto animate-fade-in">
+
+    <DashBoard :totalLivros="totalLivros" :livrosAtivos="livrosAtivos" :valorEmEstoque="valorEmEstoque" />
 
     <header class="flex flex-col sm:flex-row sm:justify-between sm:items-end mb-10 gap-4 ">
       <div>
