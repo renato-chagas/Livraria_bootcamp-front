@@ -2,7 +2,11 @@
 import { ref, onMounted } from 'vue';
 import { Moon, Sun } from '@lucide/vue';
 
+// Estado do tema (claro ou escuro)
+
 const isDark = ref(false);
+
+// Verifica o tema armazenado no localStorage ao montar o componente
 
 onMounted(() => {
   if (localStorage.getItem('tema') === 'dark') {
@@ -10,6 +14,8 @@ onMounted(() => {
     document.documentElement.classList.add('dark');
   }
 });
+
+// Função para alternar entre os modos claro e escuro
 
 const alternarTema = () => {
   isDark.value = !isDark.value;

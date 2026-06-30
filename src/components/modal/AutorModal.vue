@@ -5,13 +5,21 @@ import { useAutorStore } from '../../stores/autorStore';
 import { X } from '@lucide/vue'; 
 import { toast } from 'vue-sonner'
 
+// Props e eventos emitidos
+
 const emit = defineEmits(['fechar']);
 
+// Stores
+
 const store = useAutorStore();
+
+// Estado do formulário e mensagens de erro/carregamento
 
 const form = ref({ nome: '' });
 const erroMensagem = ref('');
 const carregando = ref(false);
+
+// Função para enviar o formulário
 
 const submit = async () => {
   erroMensagem.value = '';

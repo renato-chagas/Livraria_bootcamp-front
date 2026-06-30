@@ -13,12 +13,16 @@ import AutorModal from '../components/modal/AutorModal.vue';
 import DefaultTable from '../components/defaultTable.vue';
 
 // Stores
+
 const autorStore = useAutorStore();
 const { autores } = storeToRefs(autorStore);
+
+// Estado para controlar a visibilidade do modal de autor
 
 const mostrarModal = ref(false);
 
 // Colunas da Tabela
+
 const colunasAutores = [
   { key: 'id', label: 'ID' },
   { key: 'nome', label: 'Nome' },
@@ -26,6 +30,7 @@ const colunasAutores = [
 ];
 
 // Função para Excluir Autor com confirmação
+
 const excluirAutorClick = async (autorId) => {
   const confirmacao = await Swal.fire({
     title: 'Excluir autor?',

@@ -4,6 +4,8 @@ import { BookOpen, Users, Tags, Menu, X } from "@lucide/vue";
 
 import DarkModeButton from "./darkModeButton.vue";
 
+// Estado para controlar a visibilidade do menu lateral
+
 const menuAberto = ref(false);
 </script>
 

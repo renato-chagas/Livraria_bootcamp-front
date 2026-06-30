@@ -2,13 +2,15 @@
 import { computed } from 'vue';
 import { Book, CheckCircle, CircleDollarSign } from '@lucide/vue';
 
+// Props recebidos
+
 const props = defineProps({
     totalLivros: { type: Number, required: true },
     livrosAtivos: { type: Number, required: true },
     valorEmEstoque: { type: String, required: true }
 });
 
-// array dinâmico 
+// Array dinâmico 
 
 const cards = computed(() => [
     {

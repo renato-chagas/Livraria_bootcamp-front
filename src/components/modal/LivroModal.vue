@@ -8,7 +8,11 @@ import { useCategoriaStore } from '../../stores/categoriaStore';
 import { X } from '@lucide/vue';
 import { toast } from 'vue-sonner'
 
+// Props e eventos emitidos
+
 const emit = defineEmits(['fechar']);
+
+// Props recebidos
 
 const props = defineProps({
   itemParaEditar: {
@@ -17,12 +21,23 @@ const props = defineProps({
   }
 });
 
+// Stores
+
 const store = useLivroStore();
 const autorStore = useAutorStore();
 const categoriaStore = useCategoriaStore();
 
+// Referências reativas para autores e categorias
+
 const { categorias } = storeToRefs(categoriaStore);
 const { autores } = storeToRefs(autorStore);
+
+// Estado do formulário e mensagens de erro/carregamento
+
+const erroMensagem = ref('');
+const carregando = ref(false);
+
+// Estado do formulário para o livro
 
 const form = ref({
   titulo: '', 
@@ -33,14 +48,15 @@ const form = ref({
   categoria_id: ''
 });
 
-const erroMensagem = ref('');
-const carregando = ref(false);
+// Carregar autores e categorias ao montar o componente
 
 onMounted(() => {
   if (props.itemParaEditar) {
     form.value = { ...props.itemParaEditar };
   }
 });
+
+// Função para enviar o formulário
 
 const submit = async () => {
   erroMensagem.value = '';

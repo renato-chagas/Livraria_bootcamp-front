@@ -5,12 +5,21 @@ import { useCategoriaStore } from '../../stores/categoriaStore';
 import { X } from '@lucide/vue'; 
 import { toast } from 'vue-sonner'
 
+// Props e eventos emitidos
+
 const emit = defineEmits(['fechar']);
+
+// Stores
+
 const store = useCategoriaStore();
+
+// Estado do formulário e mensagens de erro/carregamento
 
 const form = ref({ nome: '' });
 const erroMensagem = ref('');
 const carregando = ref(false);
+
+// Função para enviar o formulário
 
 const submit = async () => {
   erroMensagem.value = '';

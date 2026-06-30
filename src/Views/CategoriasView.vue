@@ -15,7 +15,11 @@ import DefaultTable from '../components/defaultTable.vue';
 const store = useCategoriaStore();
 const { categorias } = storeToRefs(store);
 
+// Estado para controlar a visibilidade do modal de categoria
+
 const mostrarModal = ref(false);
+
+// Carrega as categorias ao montar o componente
 
 onMounted(async () => {
   await store.carregarCategorias();

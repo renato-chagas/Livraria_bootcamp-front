@@ -1,6 +1,8 @@
 <script setup>
 import { BookOpen } from '@lucide/vue'; 
 
+// Props recebidos
+
 defineProps({
   colunas: {
     type: Array,
