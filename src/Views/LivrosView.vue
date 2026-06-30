@@ -1,16 +1,23 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, computed, watch } from 'vue';
 import { storeToRefs } from 'pinia';
+
 import { BookOpen, SquarePen, Trash, Plus, Search, Archive } from '@lucide/vue';
+import { toast } from 'vue-sonner'
+import Swal from 'sweetalert2';
+
 
 import LivroModal from '../components/modal/LivroModal.vue';
 import { useLivroStore } from '../stores/livroStore';
 import { useAutorStore } from '../stores/autorStore';
 import { useCategoriaStore } from '../stores/categoriaStore';
 
+// Stores
 const livroStore = useLivroStore();
 const autorStore = useAutorStore();
 const categoriaStore = useCategoriaStore();
+
+// Estado do modal e livro selecionado
 
 const { livros, filtros } = storeToRefs(livroStore);
 const { buscarLivros, excluirLivro, inativarLivro, reativarLivro } = livroStore;
@@ -20,6 +27,7 @@ const { categorias } = storeToRefs(categoriaStore);
 const mostrarModal = ref(false);
 const livroSelecionado = ref(null);
 
+// Edição, Cadastro de Livros e Fechamento do Modal
 
 const abrirCadastro = () => {
   livroSelecionado.value = null;
@@ -31,33 +39,94 @@ const abrirEdicao = (livro) => {
   mostrarModal.value = true;
 };
 
+const fecharModal = () => {
+  mostrarModal.value = false;
+  livroSelecionado.value = null;
+};
+
+// Deletar, Inativar e Reativar Livros
+
 const deletar = async (id) => {
-  if (window.confirm('Tem certeza de que deseja remover este livro do acervo?')) {
-    await excluirLivro(id);
+  const result = await Swal.fire({
+    title: 'Excluir livro?',
+    text: 'Esta ação não poderá ser desfeita.',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonText: 'Excluir',
+    cancelButtonText: 'Cancelar',
+    confirmButtonColor: '#dc2626',
+    cancelButtonColor: '#64748b',
+    reverseButtons: true,
+    focusCancel: true,
+  });
+
+  if (!result.isConfirmed) return;
+
+  const res = await excluirLivro(id);
+
+  if (res.sucesso) {
+    toast.success('Livro removido com sucesso!');
+  } else {
+    toast.error(res.erro);
   }
 };
 
 const inativar = async (id) => {
-  if (window.confirm('Tem certeza de que deseja inativar este livro?')) {
-    await inativarLivro(id);
+  const result = await Swal.fire({
+    title: 'Inativar livro?',
+    text: 'O livro será inativado e não aparecerá no catálogo.',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonText: 'Inativar',
+    cancelButtonText: 'Cancelar',
+    confirmButtonColor: '#dc2626',
+    cancelButtonColor: '#64748b',
+    reverseButtons: true,
+    focusCancel: true,
+  });
+
+  if (!result.isConfirmed) return;
+
+  const res = await inativarLivro(id);
+
+  if (res.sucesso) {
+    toast.success('Livro inativado com sucesso!');
+  } else {
+    toast.error(res.erro);
   }
 };
 
 const reativar = async (id) => {
-  if (window.confirm('Tem certeza de que deseja reativar este livro?')) {
-    await reativarLivro(id);
+  const result = await Swal.fire({
+    title: 'Reativar livro?',
+    text: 'O livro será reativado e aparecerá no catálogo.',
+    icon: 'info',
+    showCancelButton: true,
+    confirmButtonText: 'Reativar',
+    cancelButtonText: 'Cancelar',
+    confirmButtonColor: '#10b981',
+    cancelButtonColor: '#64748b',
+    reverseButtons: true,
+    focusCancel: true,
+  });
+
+  if (!result.isConfirmed) return;
+
+  const res = await reativarLivro(id);
+
+  if (res.sucesso) {
+    toast.success('Livro reativado com sucesso!');
+  } else {
+    toast.error(res.erro);
   }
 };
 
-const formatarMoeda = (valor) => {
-  return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(valor);
-};
 
 </script>
 
 <template>
-  <div class="w-full mx-auto animate-fade-in">
-    <header class="flex flex-col sm:flex-row sm:justify-between sm:items-end mb-10 gap-4">
+  <div class="mx-auto animate-fade-in">
+    <header class="flex flex-col sm:flex-row sm:justify-between sm:items-end mb-10 gap-4 md:mt-20">
       <div>
         <h1 class="text-3xl font-extrabold tracking-tight text-slate-900">Livros</h1>
         <p class="text-slate-500 text-sm mt-1 font-medium">Gerencie o acervo da livraria</p>
@@ -130,7 +199,7 @@ const formatarMoeda = (valor) => {
                   class="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium bg-slate-100 text-slate-700">{{
                     livro.categoria }}</span>
               </td>
-              <td class="px-6 py-4 text-sm font-medium text-slate-900">{{ formatarMoeda(livro.preco) }}</td>
+              <td class="px-6 py-4 text-sm font-medium text-slate-900">R$ {{ livro.preco }}</td>
               <td class="px-6 py-4">
                 <span
                   class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-50 text-emerald-700 ring-1 ring-inset ring-emerald-600/20">{{
@@ -145,12 +214,20 @@ const formatarMoeda = (valor) => {
                   title="Excluir">
                   <Trash class="w-5 h-5" />
                 </button>
-                <button @click="inativar(livro.id)" class="text-amber-600 hover:text-amber-800 transition-colors"
-                  title="Inativar">
+                <button @click="inativar(livro.id)" :disabled="!livro.ativo" :class="[
+                  'transition-colors',
+                  !livro.ativo
+                    ? 'text-slate-400 cursor-not-allowed'
+                    : 'text-amber-600 hover:text-amber-800'
+                ]" title="Inativar">
                   <Archive class="w-5 h-5" />
                 </button>
-                <button @click="reativar(livro.id)" class="text-emerald-600 hover:text-emerald-800 transition-colors"
-                  title="Reativar">
+                <button @click="reativar(livro.id)" :disabled="livro.ativo" :class="[
+                  'transition-colors',
+                  livro.ativo
+                    ? 'text-slate-400 cursor-not-allowed'
+                    : 'text-emerald-600 hover:text-emerald-800'
+                ]" title="Reativar">
                   <Plus class="w-5 h-5" />
                 </button>
               </td>
@@ -167,6 +244,6 @@ const formatarMoeda = (valor) => {
         </table>
       </div>
     </section>
-    <LivroModal v-if="mostrarModal" :itemParaEditar="livroSelecionado" @fechar="mostrarModal = false" />
+    <LivroModal v-if="mostrarModal" :itemParaEditar="livroSelecionado" @fechar="fecharModal" />
   </div>
 </template>

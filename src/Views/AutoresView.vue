@@ -1,14 +1,42 @@
 <script setup>
 import { ref } from 'vue';
 import { storeToRefs } from 'pinia';
-import { useAutorStore } from '../stores/autorStore'; 
+
 import { Users, Plus, SquarePen, Trash } from '@lucide/vue';
+
+import { useAutorStore } from '../stores/autorStore'; 
+
+import Swal from 'sweetalert2';
+import { toast } from 'vue-sonner'
+
 import AutorModal from '../components/modal/AutorModal.vue';
 
 const autorStore = useAutorStore();
 const { autores } = storeToRefs(autorStore);
 
 const mostrarModal = ref(false);
+
+const excluirAutorClick = async (autorId) => {
+  const confirmacao = await Swal.fire({
+    title: 'Excluir autor?',
+    text: 'Tem certeza de que deseja remover este autor do catálogo?',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonText: 'Excluir',
+    cancelButtonText: 'Cancelar',
+    confirmButtonColor: '#dc2626',
+    cancelButtonColor: '#64748b',
+    reverseButtons: true,
+    focusCancel: true,
+  });
+  if (!confirmacao.isConfirmed) return;
+  const res = await autorStore.excluirAutor(autorId);
+  if (res.sucesso) {
+    toast.success('Autor excluído com sucesso!');
+  } else {
+    toast.error(res.erro);
+  }
+};
 </script>
 
 <template>
@@ -41,7 +69,7 @@ const mostrarModal = ref(false);
               <td class="px-6 py-4 text-sm font-bold text-slate-900">{{ autor.nome }}</td>
               <td class="flex flex-row px-6 py-4  space-x-3">
 
-                <button class="text-rose-600 hover:text-rose-900 pointer-fine:" title="Excluir">
+                <button class="text-rose-600 hover:text-rose-900 pointer-fine:" @click="excluirAutorClick(autor.id)" title="Excluir">
                   <Trash class="w-5 h-5" />
                 </button>
               </td>

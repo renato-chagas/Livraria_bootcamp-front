@@ -2,8 +2,14 @@
 import { ref, onMounted } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useCategoriaStore } from '../stores/categoriaStore';
+
 import { Tags, Plus, SquarePen, Trash } from '@lucide/vue'; 
+import { toast } from 'vue-sonner'
+import Swal from 'sweetalert2';
+
 import CategoriaModal from '../components/modal/CategoriaModal.vue';
+
+//Stores
 
 const store = useCategoriaStore();
 const { categorias } = storeToRefs(store);
@@ -13,6 +19,30 @@ const mostrarModal = ref(false);
 onMounted(async () => {
   await store.carregarCategorias();
 });
+
+// Função para excluir categoria com confirmação
+
+const excluirCategoriaClick = async (categoriaId) => {
+  const confirmacao =await Swal.fire({
+    title: 'Excluir categoria?',
+    text: 'Esta ação não poderá ser desfeita.',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonText: 'Excluir',
+    cancelButtonText: 'Cancelar',
+    confirmButtonColor: '#dc2626',
+    cancelButtonColor: '#64748b',
+    reverseButtons: true,
+    focusCancel: true,
+  });
+  if (!confirmacao.isConfirmed) return;
+  const res = await store.excluirCategoria(categoriaId);
+  if (res.sucesso) {
+    toast.success('Categoria excluída com sucesso!');
+  } else {
+    toast.error(res.erro);
+  }
+};
 </script>
 
 <template>
@@ -48,7 +78,7 @@ onMounted(async () => {
                 </span>
               </td>
               <td class="px-6 py-4 text-right space-x-3 flex flex-row">
-                <button class="text-rose-600 hover:text-rose-800 " title="Excluir">
+                <button class="text-rose-600 hover:text-rose-800" @click="excluirCategoriaClick(categoria.id)" title="Excluir">
                   <Trash class="w-5 h-5" />
                 </button>
               </td>
