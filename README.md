@@ -81,6 +81,14 @@ http://localhost:5173
 
 ---
 
+## 🚧 Funcionalidades Não Concluídas
+
+O escopo principal focado nas regras de negócio de acervo foi entregue na totalidade. No entanto, a seguinte funcionalidade ficou fora desta primeira *release*:
+
+* **Autenticação e Autorização (Login/JWT):** A implementação de um sistema de usuários e rotas privadas não foi concluída. Em um cenário de gestão de tempo, optou-se por priorizar a entrega perfeita do CRUD (com validações de integridade no banco, *Soft Delete* e interface avançada) ao invés de entregar um sistema de login feito às pressas que pudesse bloquear o acesso do avaliador ao sistema principal.
+
+---
+
 ## Estrutura
 
 ```
